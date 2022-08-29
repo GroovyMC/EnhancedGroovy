@@ -1,0 +1,87 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
+plugins {
+    id 'java'
+    id 'groovy'
+    id 'idea'
+    id 'org.jetbrains.kotlin.jvm' version "${kotlinVersion}"
+    id 'org.jetbrains.intellij' version '1.6.0'
+    id 'org.cadixdev.licenser' version '0.6.1'
+}
+
+group = pluginGroup
+version = pluginVersion
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(11)
+
+repositories {
+    mavenCentral()
+    maven {
+        name = 'IntelliJ Dependencies'
+        url = 'https://cache-redirector.jetbrains.com/intellij-dependencies'
+    }
+}
+
+sourceSets {
+    dsl
+    test
+}
+
+dependencies {
+    dslImplementation "org.apache.groovy:groovy:${groovyVersion}"
+    testImplementation "org.apache.groovy:groovy:${groovyVersion}"
+    testCompileOnly sourceSets.dsl.output
+
+    implementation "org.ow2.asm:asm:${asmVersion}"
+    implementation "org.ow2.asm:asm-tree:${asmVersion}"
+    implementation "org.ow2.asm:asm-analysis:${asmVersion}"
+    implementation "org.apache.groovy:groovy:${groovyVersion}"
+
+    compileOnly sourceSets.dsl.output
+}
+
+tasks.create('testJar', Jar) {
+    group 'build'
+    from sourceSets.test.output
+    classifier 'test'
+}
+
+intellij {
+    pluginName = project.properties.pluginName
+    type = platformType
+    version = platformVersion
+
+    downloadSources = true
+    updateSinceUntilBuild = false
+    plugins = ['java', 'gradle', 'Groovy', 'ByteCodeViewer']
+    sandboxDir = layout.projectDirectory.dir('.sandbox').toString()
+}
+
+tasks.withType(KotlinCompile).configureEach {
+    kotlinOptions {
+        jvmTarget = '11'
+        freeCompilerArgs = ['-Xjvm-default=all']
+    }
+}
+
+compileGroovy {
+    javaLauncher.set(javaToolchains.launcherFor {
+        languageVersion = JavaLanguageVersion.of(8)
+    })
+}
+
+jar {
+    from sourceSets.dsl.output
+}
+
+license {
+    header = file('HEADER')
+    ext {
+        name = 'EnhancedGroovy'
+        year = 2022
+        holder = 'Matyrobbrt'
+    }
+    exclude '**/bytecode-utils.kt', '**/class-utils.kt', '**/MemberReference.kt', '**/psi-utils.kt', '**/gradle-util.kt'
+}
+
+idea.module.excludeDirs.add(project.file(intellij.sandboxDir.get()))

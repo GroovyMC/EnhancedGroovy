@@ -1,0 +1,13 @@
+plugins {
+    id 'groovy'
+}
+repositories {
+    mavenCentral()
+    flatDir {
+        dir "$projectDir/../build/libs"
+    }
+}
+dependencies {
+    implementation 'org.apache.groovy:groovy:4.0.4'
+    compileOnly 'nll:EnhancedGroovy:0.1.0:test'
+}

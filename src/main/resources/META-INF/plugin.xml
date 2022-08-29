@@ -1,0 +1,21 @@
+<idea-plugin url="https://todo.com">
+    <idea-version since-build="0"/> <!-- TODO figure out a plu -->
+    <id>com.matyrobbrt.enhancedgroovy</id>
+    <name>EnhancedGroovy</name>
+    <vendor>Matyrobbrt</vendor>
+
+    <description><![CDATA[
+    This plugin allows Groovy annotations to add the fields / methods they add to your IDE.
+    ]]></description>
+
+    <depends>com.intellij.java</depends>
+    <depends>org.intellij.groovy</depends>
+
+    <extensions defaultExtensionNs="org.intellij.groovy">
+        <astTransformationSupport implementation="com.matyrobbrt.enhancedgroovy.plugin.IDECompatASTSupport"/>
+    </extensions>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <fileBasedIndex implementation="com.matyrobbrt.enhancedgroovy.plugin.index.IDESupportScriptIndexer"/>
+    </extensions>
+</idea-plugin>

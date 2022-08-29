@@ -1,0 +1,1 @@
+transformer.addField('yes', 'java.lang.String')
