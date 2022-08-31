@@ -1,0 +1,5 @@
+class SubClass {
+    {
+        TestingThing.helloThere
+    }
+}

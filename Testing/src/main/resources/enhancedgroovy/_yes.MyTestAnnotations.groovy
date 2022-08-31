@@ -1,1 +1,1 @@
-transformer.addField('yes', 'java.lang.String')
+transformer.addField('SHHH', 'java.lang.String')

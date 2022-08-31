@@ -1,16 +1,14 @@
+import groovy.transform.CompileStatic
 import yes.MyTestAnnotations
 
-@MyTestAnnotations
+@CompileStatic
+@MyTestAnnotations(helloWorld = 'helloThere')
 class TestingThing {
-    static {
-        println helloThere
-        println helloThere
-        println yep.get()
-    }
+    /**
+     * HIII
+     */
+    private final String myField = '12'
     TestingThing() {
         println helloThere
-        if (helloThere > 12) {
-
-        }
     }
 }
