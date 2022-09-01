@@ -4,6 +4,7 @@ plugins {
     id 'java'
     id 'groovy'
     id 'idea'
+    id 'maven-publish'
     id 'org.jetbrains.kotlin.jvm' version "${kotlinVersion}"
     id 'org.jetbrains.intellij' version '1.6.0'
     id 'org.cadixdev.licenser' version '0.6.1'
@@ -71,6 +72,16 @@ jar {
     from sourceSets.dsl.output
 }
 
+tasks.register('dslJar', Jar) {
+    it.from sourceSets.dsl.output
+    it.archiveBaseName = 'dsl'
+}
+tasks.register('dslSources', Jar) {
+    it.from sourceSets.dsl.allSource
+    it.archiveBaseName = 'dsl'
+    it.archiveClassifier = 'sources'
+}
+
 license {
     header = file('HEADER')
     ext {
@@ -82,3 +93,25 @@ license {
 }
 
 idea.module.excludeDirs.add(project.file(intellij.sandboxDir.get()))
+
+publishing {
+    publications {
+        mavenDsl(MavenPublication) {
+            groupId = 'com.matyrobbrt.enhancedgroovy'
+            artifactId = 'dsl'
+            version = project.version
+
+            artifacts = [dslJar, dslSources]
+        }
+    }
+    repositories {
+        maven {
+            name = 'ModdingInquisitionMavenRepo'
+            url = 'https://maven.moddinginquisition.org/releases'
+            credentials {
+                username = findProperty('inquisitionMavenUser') ?: ''
+                password = findProperty('inquisitionMavenPassword') ?: ''
+            }
+        }
+    }
+}

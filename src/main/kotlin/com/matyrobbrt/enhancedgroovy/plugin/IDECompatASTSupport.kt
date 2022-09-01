@@ -54,6 +54,7 @@ class IDECompatASTSupport : AstTransformationSupport {
         val module = ModuleUtil.findModuleForFile(context.codeClass.containingFile)
         val scope: GlobalSearchScope = if (module == null) GlobalSearchScope.allScope(context.project)
             else GlobalSearchScope.moduleWithDependenciesAndLibrariesScope(module)
+        // TODO support for field and method annotations
         context.codeClass.annotations.forEach {
             transformer.currentAnnotation = it
 
