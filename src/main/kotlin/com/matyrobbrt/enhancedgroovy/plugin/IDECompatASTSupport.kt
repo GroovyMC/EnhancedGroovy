@@ -31,11 +31,15 @@ class IDECompatASTSupport : AstTransformationSupport {
             return shell.get().parse(String(file.contentsToByteArray()))
         }
 
-        @Synchronized fun getScript(file: VirtualFile, immutable: Boolean): Script {
+        fun getScript(file: VirtualFile, immutable: Boolean): Script {
             if (!immutable) {
-                return createScript(file)
+                synchronized(shell) {
+                    return createScript(file)
+                }
             }
-            return scriptCache.get(file) { createScript(file) }
+            synchronized(scriptCache) {
+                return scriptCache.get(file) { createScript(file) }
+            }
         }
 
         fun createTransformer(context: TransformationContext): TransformerImpl {
@@ -53,8 +57,7 @@ class IDECompatASTSupport : AstTransformationSupport {
         context.codeClass.annotations.forEach {
             transformer.currentAnnotation = it
 
-            // TODO in-project still doesn't work properly... yay deadlocks
-            listOf(true).forEach { type ->
+            listOf(true, false).forEach { type ->
                 val qualified = it.resolveAnnotationType()?.qualifiedName ?: return
                 val collector = CommonProcessors.CollectProcessor<VirtualFile>(ArrayList())
                 index.getFilesWithKey(

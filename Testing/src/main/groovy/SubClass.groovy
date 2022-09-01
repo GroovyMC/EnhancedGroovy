@@ -1,5 +1,5 @@
 class SubClass {
     {
-        TestingThing.helloThere
+        TestingThing.helloThere.get().SHHH
     }
 }

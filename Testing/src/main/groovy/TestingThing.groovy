@@ -7,8 +7,9 @@ class TestingThing {
     /**
      * HIII
      */
-    private final String myField = '12'
+    public final String myField = '12'
     TestingThing() {
-        println helloThere
+        helloThere.get().SHHH
+        println SHHH
     }
 }
