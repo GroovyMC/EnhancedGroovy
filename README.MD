@@ -7,7 +7,7 @@ repositories {
     maven { url = 'https://maven.moddinginquisition.org/releases' }
 }
 dependencies {
-    compileOnly "com.matyrobbrt.enhancegroovy:dsl:$dslVersion" // Each plugin version has its own dsl version with the same ID
+    compileOnly "com.matyrobbrt.enhancedgroovy:dsl:$dslVersion" // Each plugin version has its own dsl version with the same ID
 }
 ```
 Now, in order to add support for annotations, in your `resources` folder create a GroovyScript named `enhancedgroovy/_${annotationName}.groovy`,
