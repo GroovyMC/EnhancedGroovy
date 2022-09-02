@@ -1,3 +1,6 @@
+![Version](https://img.shields.io/jetbrains/plugin/v/com.matyrobbrt.enhancedgroovy)
+![Downloads](https://img.shields.io/jetbrains/plugin/d/com.matyrobbrt.enhancedgroovy)
+
 # EnhancedGroovy
 EnhancedGroovy is an IntelliJ plugin which allows Groovy annotations to add their fields to your IDE.
 ## Dev usage
