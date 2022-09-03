@@ -41,5 +41,14 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <fileBasedIndex implementation="com.matyrobbrt.enhancedgroovy.plugin.index.IDESupportScriptIndexer"/>
+
+        <localInspection language="Groovy" groupPath="EnhancedGroovy"
+                         enabledByDefault="true" level="WEAK WARNING" shortName="EnhancedGroovy.ASTTransformerShouldCallInit"
+                         implementationClass="com.matyrobbrt.enhancedgroovy.plugin.asttassistance.inspection.ASTTCallInitInspection"/>
+
+        <psi.referenceContributor implementation="com.matyrobbrt.enhancedgroovy.plugin.asttassistance.reference.ASTTReferenceContributor" />
+    </extensions>
+
+    <extensions defaultExtensionNs="org.intellij.groovy">
     </extensions>
 </idea-plugin>
