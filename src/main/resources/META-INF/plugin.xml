@@ -45,6 +45,12 @@
         <localInspection language="Groovy" groupPath="EnhancedGroovy"
                          enabledByDefault="true" level="WEAK WARNING" shortName="EnhancedGroovy.ASTTransformerShouldCallInit"
                          implementationClass="com.matyrobbrt.enhancedgroovy.plugin.asttassistance.inspection.ASTTCallInitInspection"/>
+        <localInspection language="Groovy" groupPath="EnhancedGroovy"
+                         enabledByDefault="true" level="ERROR" shortName="EnhancedGroovy.GrUnresolvedASTTransformer"
+                         implementationClass="com.matyrobbrt.enhancedgroovy.plugin.asttassistance.inspection.UnresolvedASTTClassInspection"/>
+        <localInspection language="Java" groupPath="EnhancedGroovy"
+                         enabledByDefault="true" level="ERROR" shortName="EnhancedGroovy.UnresolvedASTTransformer"
+                         implementationClass="com.matyrobbrt.enhancedgroovy.plugin.asttassistance.inspection.UnresolvedASTTClassInspection"/>
 
         <psi.referenceContributor implementation="com.matyrobbrt.enhancedgroovy.plugin.asttassistance.reference.ASTTReferenceContributor" />
     </extensions>
