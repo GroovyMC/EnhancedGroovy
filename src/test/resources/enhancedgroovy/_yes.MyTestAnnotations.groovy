@@ -29,8 +29,21 @@ final annotation = ((Annotation) this.annotation)
 final transformer = ((ClassTransformer) this.transformer)
 
 transformer.addField([
-        'name': annotation.getAttribute('helloWorld').toString(),
-        'type': "java.util.Optional<${transformer.className}>",
+        'name'     : annotation.getAttribute('helloWorld').toString(),
+        'type'     : "java.util.Optional<${transformer.className}>",
         'modifiers': ['public', 'static', 'final'],
-        'doc': '/** This is a test */'
+        'doc'      : '/** This is a test */'
+])
+transformer.addMethod([
+        'name'      : 'someName',
+        'modifiers' : ['public', 'final'],
+        'returnType': 'java.lang.String',
+        'parameters': [
+                'param1': 'java.lang.Integer',
+                'param2': [
+                        'type'    : 'java.util.Optional<java.lang.String>',
+                        'optional': true
+                ]
+        ],
+        'throws'    : ['java.io.IOException']
 ])

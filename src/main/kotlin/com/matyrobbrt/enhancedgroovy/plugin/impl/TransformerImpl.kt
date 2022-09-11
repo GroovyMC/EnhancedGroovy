@@ -24,9 +24,11 @@
 package com.matyrobbrt.enhancedgroovy.plugin.impl
 
 import com.intellij.psi.PsiAnnotation
+import com.intellij.psi.search.GlobalSearchScope
 import com.matyrobbrt.enhancedgroovy.dsl.ClassTransformer
 import com.matyrobbrt.enhancedgroovy.plugin.util.GroovyLightField
 import org.jetbrains.plugins.groovy.lang.groovydoc.psi.impl.GrDocCommentImpl
+import org.jetbrains.plugins.groovy.lang.psi.impl.synthetic.GrLightMethodBuilder
 import org.jetbrains.plugins.groovy.transformations.TransformationContext
 
 class TransformerImpl(private val context: TransformationContext, var currentAnnotation: PsiAnnotation?) : ClassTransformer {
@@ -50,6 +52,38 @@ class TransformerImpl(private val context: TransformationContext, var currentAnn
             "name" to name,
             "type" to type
         ))
+    }
+
+    override fun addMethod(options: MutableMap<String, Any>) {
+        val method = GrLightMethodBuilder(context.manager, options.get("name").toString())
+        val annotation = currentAnnotation!!
+        method.originInfo = "created by @${annotation.qualifiedName}"
+        method.navigationElement = annotation
+        (options.getOrDefault("modifiers", listOf<String>()) as List<*>).forEach { method.modifierList.addModifier(it.toString()) }
+        method.containingClass = context.codeClass
+
+        (options.getOrDefault("parameters", mapOf<Any, Any>()) as Map<*, *>).forEach {
+            val name = it.key.toString()
+            when (val value = it.value) {
+                is String -> method.addParameter(name, value)
+                is Map<*, *> -> {
+                    if ((value.getOrDefault("optional", false) as Boolean)) {
+                        method.addOptionalParameter(name, value["type"].toString())
+                    } else {
+                        method.addParameter(name, value["type"].toString())
+                    }
+                }
+            }
+        }
+
+        val returnType = options["returnType"]
+        if (returnType != null) {
+            method.setReturnType(returnType.toString(), GlobalSearchScope.allScope(context.project))
+        }
+
+        (options.getOrDefault("throws", listOf<String>()) as List<*>).forEach { method.throwsList.addReference(it.toString()) }
+
+        context.methods.add(method)
     }
 
     override fun getFields(): List<ReadOnlyField> = context.fields.map { ReadOnlyField(it) }

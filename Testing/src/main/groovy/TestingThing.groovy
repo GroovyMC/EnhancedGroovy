@@ -11,5 +11,6 @@ class TestingThing {
     TestingThing() {
         helloThere.get().SHHH
         println SHHH
+        this.someName(null, null)
     }
 }

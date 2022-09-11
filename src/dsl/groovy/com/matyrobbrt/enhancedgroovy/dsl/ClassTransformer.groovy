@@ -43,5 +43,13 @@ interface ClassTransformer {
     ]) Map<String, Object> options)
     List<Field> getFields()
 
+    void addMethod(@NamedParams([
+            @NamedParam(value = 'name', type = String, required = true),
+            @NamedParam(value = 'returnType', type = String),
+            @NamedParam(value = 'parameters'),
+            @NamedParam(value = 'throws', type = List<String>),
+            @NamedParam(value = 'modifiers', type = List<String>)
+    ]) Map<String, Object> options)
+
     String getClassName()
 }
